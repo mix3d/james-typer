@@ -21,63 +21,70 @@ const App: Component = () => {
 
   let ref: HTMLDivElement
 
-  const [string, setString] = createSignal("")
-  const [speaking, setSpeaking] = createSignal(false)
-  const [letterIdx, setIdx] = createSignal(-1)
+  const [inputString, setInputString] = createSignal("")
+  const [speakingPhrase, setSpeakingPhrase] = createSignal(false)
+  const [charIdx, setCharIdx] = createSignal(-1)
 
-  const speakingArray: SpeechSynthesisUtterance[] = []
+  let speakingArray: SpeechSynthesisUtterance[] = []
   let speakingIndex = -1
 
   const onKeypress = (e: KeyboardEvent) => {
-    if (speaking()) return
+    // don't let input happen when the whole phrase is queued.
+    if (speakingPhrase()) return
 
     if (e.code.startsWith("Key")) {
       const char = e.code[3]
-      const currIdx = string().length
-      setString((prev) => prev + char)
+      const currIdx = inputString().length
+      setInputString((prev) => prev + char)
 
+      // speaks "Capital [Letter]" if you don't lowercase
       var msg = createVoice(char.toLowerCase())
       msg.rate = 1;
       msg.onstart = () => {
-        setIdx(currIdx)
+        // highlights the current index character
+        setCharIdx(currIdx)
+        // console.log("setting speakingIndex", speakingIndex, currIdx)
+        speakingIndex = currIdx
       }
       msg.onend = () => {
+        if (speakingIndex + 1 < speakingArray.length) {
+          window.speechSynthesis.speak(speakingArray[currIdx + 1])
+        }
+        else {
+          speakingIndex++
+        }
 
-        // TODO: create a queue locally instead of relying on the SpeachSynthesis' queue, 
-        // so you can delete un-spoken letters without them being queued
-
-        // console.log(letterIdx(), speakingArray.length)
-        // if (speakingArray.length > letterIdx() + 1) {
-        //   console.log("speaking the next letter")
-        //   window.speechSynthesis.speak(speakingArray[currIdx + 1])
-        // }
-        // else {
-        // }
-        setIdx(-1)
+        // Unset the char underline regardless. Will get set per letter again.
+        setCharIdx(-1)
       }
-      // speakingArray.push(msg)
+      speakingArray.push(msg)
 
-      // console.log(currIdx, letterIdx())
-      // if (currIdx === 0 || currIdx - 1 === letterIdx())
-      window.speechSynthesis.speak(msg)
+      if ((speakingIndex === -1 && speakingArray.length === 1) || speakingIndex + 1 === speakingArray.length) {
+        window.speechSynthesis.speak(msg)
+      }
 
     }
     else if (e.code === 'Backspace') {
-      setString(prev => prev.slice(0, -1))
+      setInputString(prev => prev.slice(0, -1))
 
       //TODO: test if currently spoken letter is the one being deleted 
-
-      // speakingArray.pop()
+      if (speakingIndex >= 0)
+        speakingIndex--
+      speakingArray.pop()
     }
-    else if (e.code === 'Space')
-      setString(prev => prev + '\xa0')
+    else if (e.code === 'Space') {
+      setInputString(prev => prev + '\xa0')
+      speakingIndex++
+    }
     else if (CLEAR.includes(e.code)) {
-      setSpeaking(true)
-      var msg = createVoice(string())
+      setSpeakingPhrase(true)
+      speakingIndex = -1
+      speakingArray = []
+      var msg = createVoice(inputString())
       msg.rate = 0.75;
       msg.onend = () => {
-        setString("")
-        setSpeaking(false)
+        setInputString("")
+        setSpeakingPhrase(false)
       }
       window.speechSynthesis.speak(msg)
     }
@@ -100,13 +107,13 @@ const App: Component = () => {
   return (
     <div class={styles.App}>
       <div ref={ref}>
-        <Show when={string().length}>
+        <Show when={inputString().length}>
           <span class={styles.prompt}></span>
         </Show>
-        <For each={string().split('')}>{(char, i) => (
-          <span classList={{ [styles.active]: i() === letterIdx() }}>{char}</span>
+        <For each={inputString().split('')}>{(char, i) => (
+          <span classList={{ [styles.active]: i() === charIdx() }}>{char}</span>
         )}</For>
-        <span classList={{ [styles.prompt]: true, [styles.cursor]: !speaking() }}></span>
+        <span classList={{ [styles.prompt]: true, [styles.cursor]: !speakingPhrase() }}></span>
       </div>
     </div >
   );
