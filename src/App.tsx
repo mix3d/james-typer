@@ -50,7 +50,7 @@ const App: Component = () => {
         if (speakingIndex + 1 < speakingArray.length) {
           if (speakingArray[currIdx + 1] !== undefined)
             window.speechSynthesis.speak(speakingArray[currIdx + 1])
-          //inserted a blank entry to the speaking array because of spaces
+          //inserted a blank entry to the speaking array because of spaces, so start the next one
           else if (speakingArray[currIdx + 2] !== undefined)
             window.speechSynthesis.speak(speakingArray[currIdx + 2])
         }
@@ -64,9 +64,9 @@ const App: Component = () => {
       }
       speakingArray.push(msg)
 
-      console.log("should start again?!", speakingIndex, speakingArray.length)
+      // console.log("should start again?!", speakingIndex, speakingArray.length)
       if ((speakingIndex === -1 && speakingArray.length === 1) || speakingIndex + 1 === speakingArray.length) {
-        console.log("starting speech")
+        // console.log("starting speech")
         window.speechSynthesis.speak(msg)
       }
 
@@ -84,7 +84,7 @@ const App: Component = () => {
         speakingArray.push(undefined)
       }
       else {
-        console.log("skipped a space")
+        // console.log("skipped a space")
       }
     }
     else if (CLEAR.includes(e.code)) {
@@ -96,6 +96,10 @@ const App: Component = () => {
       msg.onend = () => {
         setInputString("")
         setSpeakingPhrase(false)
+        // belt and suspenders?!
+        // I think there's a race condition where the array index is not reset due to being set by the previous char's onEnd
+        speakingArray = []
+        speakingIndex = -1
       }
       window.speechSynthesis.speak(msg)
     }
