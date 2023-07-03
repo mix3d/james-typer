@@ -8,8 +8,17 @@
   width: 100vw;
 }
 
-.active {
-  border-bottom: 0.1em solid black;
+.active:after {
+  /* border-bottom: 0.1em solid black; */
+  position: absolute;
+  content: "";
+  display: block;
+  width: 0.4em;
+  height: 0.1em;
+  border-radius: 100px;
+  background: red;
+  bottom: -0em;
+  left: calc(50% - 0.23em);
 }
 
 .App div {
@@ -18,10 +27,14 @@
   letter-spacing: 0.075em;
 }
 
+.App span {
+  display: inline-block;
+  position: relative;
+}
+
 .prompt {
   width: 0.4em;
   height: 0.72em;
-  display: inline-block;
   border-bottom: 0.03em solid transparent;
 }
 
