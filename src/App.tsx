@@ -40,6 +40,9 @@ const App: Component = () => {
       }
       msg.onend = () => {
 
+        // TODO: create a queue locally instead of relying on the SpeachSynthesis' queue, 
+        // so you can delete un-spoken letters without them being queued
+
         // console.log(letterIdx(), speakingArray.length)
         // if (speakingArray.length > letterIdx() + 1) {
         //   console.log("speaking the next letter")
@@ -61,10 +64,10 @@ const App: Component = () => {
 
       //TODO: test if currently spoken letter is the one being deleted 
 
-      speakingArray.pop()
+      // speakingArray.pop()
     }
     else if (e.code === 'Space')
-      setString(prev => prev + " ")
+      setString(prev => prev + '\xa0')
     else if (CLEAR.includes(e.code)) {
       setSpeaking(true)
       var msg = createVoice(string())
