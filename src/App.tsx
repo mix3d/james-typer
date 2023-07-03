@@ -25,7 +25,7 @@ const App: Component = () => {
   const [speakingPhrase, setSpeakingPhrase] = createSignal(false)
   const [charIdx, setCharIdx] = createSignal(-1)
 
-  let speakingArray: SpeechSynthesisUtterance[] = []
+  let speakingArray: Array<SpeechSynthesisUtterance | undefined> = []
   let speakingIndex = -1
 
   const onKeypress = (e: KeyboardEvent) => {
@@ -48,10 +48,15 @@ const App: Component = () => {
       }
       msg.onend = () => {
         if (speakingIndex + 1 < speakingArray.length) {
-          window.speechSynthesis.speak(speakingArray[currIdx + 1])
+          if (speakingArray[currIdx + 1] !== undefined)
+            window.speechSynthesis.speak(speakingArray[currIdx + 1])
+          //inserted a blank entry to the speaking array because of spaces
+          else if (speakingArray[currIdx + 2] !== undefined)
+            window.speechSynthesis.speak(speakingArray[currIdx + 2])
         }
         else {
-          speakingIndex++
+          if (speakingIndex + 1 === speakingArray.length)
+            speakingIndex++
         }
 
         // Unset the char underline regardless. Will get set per letter again.
@@ -59,22 +64,28 @@ const App: Component = () => {
       }
       speakingArray.push(msg)
 
+      console.log("should start again?!", speakingIndex, speakingArray.length)
       if ((speakingIndex === -1 && speakingArray.length === 1) || speakingIndex + 1 === speakingArray.length) {
+        console.log("starting speech")
         window.speechSynthesis.speak(msg)
       }
 
     }
     else if (e.code === 'Backspace') {
       setInputString(prev => prev.slice(0, -1))
-
-      //TODO: test if currently spoken letter is the one being deleted 
-      if (speakingIndex >= 0)
+      if (speakingIndex + 1 > speakingArray.length)
         speakingIndex--
       speakingArray.pop()
     }
     else if (e.code === 'Space') {
-      setInputString(prev => prev + '\xa0')
-      speakingIndex++
+      if (inputString().slice(-1) !== '\xa0') {
+        setInputString(prev => prev + '\xa0')
+        speakingIndex++
+        speakingArray.push(undefined)
+      }
+      else {
+        console.log("skipped a space")
+      }
     }
     else if (CLEAR.includes(e.code)) {
       setSpeakingPhrase(true)
