@@ -1,0 +1,38 @@
+.App {
+  text-align: center;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  background: #fbfdff;
+  height: 100vh;
+  width: 100vw;
+}
+
+.active {
+  border-bottom: 0.1em solid black;
+}
+
+.App div {
+  padding: 3rem;
+  pointer-events: none;
+  letter-spacing: 0.075em;
+}
+
+.prompt {
+  width: 0.4em;
+  height: 0.72em;
+  display: inline-block;
+  border-bottom: 0.03em solid transparent;
+}
+
+.cursor {
+  background: #cbcdcf;
+  border-color: #333;
+  animation: cursor-blink 1.5s steps(2) infinite;
+}
+
+@keyframes cursor-blink {
+  0% {
+    background: transparent;
+  }
+}
