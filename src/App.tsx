@@ -6,10 +6,13 @@ import styles from './App.module.css';
 
 const CLEAR = ['Enter', 'Space']
 
+let defaultVoice: SpeechSynthesisVoice | undefined
+
 const createVoice = (string: string) => {
   var msg = new SpeechSynthesisUtterance(string);
-  const defaultVoice = window.speechSynthesis.getVoices().find(v => v.name == "Google US English")
-  if (defaultVoice)
+  if (!defaultVoice)
+    defaultVoice = window.speechSynthesis.getVoices().find(v => v.name == "Google US English")
+  else if (defaultVoice)
     msg.voice = defaultVoice
   return msg
 }
