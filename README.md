@@ -4,7 +4,7 @@ My almost-three-year-old keeps trying to use my computer, so why not use that as
 
 ## Usage
 
-Typed alpha-characters are displayed and spoken. Pressing `Enter` will speak the written word.
+Typed alpha-characters are displayed and spoken. Pressing `Enter` will speak the written word. Other keypresses are generally ignored for now.
 
 ## Technology
 
@@ -20,6 +20,8 @@ I am fully aware that I am mixing Solid's signals and vanilla JS arrays, this wa
 - Service Worker to cache the site and make it work offline
 - Feature detection for if TTS isn't available
 - A dev mode to let you choose fonts and TTS voices, saving prefs to local storage
+- Single-letter-mode
+- Music mode: letters play notes instead
 - Spellchecker with a "did you mean X" on submit, ideally with a fancy transition from the submitted text to the correct spelling
 - A generative AI / other image search to find an appropriate image, if the object is a standard item (like an apple, house, etc) or an animal (Dog, Cat, horse, penguin, etc), which is then shown during the submission
 - A submission history that's easily visible
