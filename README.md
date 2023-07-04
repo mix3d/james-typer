@@ -1,14 +1,31 @@
+# James Typer
+
+My almost-three-year-old keeps trying to use my computer, so why not use that as an opportunity to help learn typing, letters, spelling, and pronounciation?
+
 ## Usage
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+Typed alpha-characters are displayed and spoken. Pressing `Enter` will speak the written word.
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## Technology
 
-```bash
-$ npm install # or pnpm install or yarn install
-```
+- [SolidJS](https://www.solidjs.com/) for fast and lightweight reactivity
+- [Fitty](https://github.com/rikschennink/fitty) for automatic text fitting
+- The not-a-standard `SpeechSynthesis` browser feature for Text-To-Speech<br> _Note: Chrome has a built-in TTS engine that is better than most defaults: "Google US English"_
+- Deployed to Vercel
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+I am fully aware that I am mixing Solid's signals and vanilla JS arrays, this was built in 4-6 hours during a holiday, with the majority of that time fixing edgecase bugs to ensure the letters are always spoken correctly, even when deleting typos. If you want to show a better way to implement this, please create a PR!
+
+## Potential future features
+
+- Service Worker to cache the site and make it work offline
+- Feature detection for if TTS isn't available
+- A dev mode to let you choose fonts and TTS voices, saving prefs to local storage
+- Spellchecker with a "did you mean X" on submit, ideally with a fancy transition from the submitted text to the correct spelling
+- A generative AI / other image search to find an appropriate image, if the object is a standard item (like an apple, house, etc) or an animal (Dog, Cat, horse, penguin, etc), which is then shown during the submission
+- A submission history that's easily visible
+- Raspberry Pi script to boot directly and fullscreen into the built site
+
+In all likelihood, this will never happen, but one can dream!
 
 ## Available Scripts
 
