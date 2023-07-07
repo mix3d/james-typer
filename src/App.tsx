@@ -34,7 +34,7 @@ const createVoice = (string: string) => {
     }
   }
   if (defaultVoice) {
-    console.log("found a default, setting voice", defaultVoice.name)
+    // console.log("found a default, setting voice", defaultVoice.name)
     msg.voice = defaultVoice
   }
   return msg
