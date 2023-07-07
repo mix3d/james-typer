@@ -8,12 +8,35 @@ const CLEAR = ['Enter', 'Space']
 
 let defaultVoice: SpeechSynthesisVoice | undefined
 
+const preferredVoices = [
+  "Google US English",
+  "Microsoft Jenny Online (Natural) - English (United States)",
+]
+
+// By requesting the voices upfront, we avoid a situation where the list doesn't load and we switch voices after the first character
+window.speechSynthesis.getVoices()
+
 const createVoice = (string: string) => {
+  // console.log("creating voice")
   var msg = new SpeechSynthesisUtterance(string);
-  if (!defaultVoice)
-    defaultVoice = window.speechSynthesis.getVoices().find(v => v.name == "Google US English")
-  else if (defaultVoice)
+  if (!defaultVoice) {
+    // console.log("No default voice set")
+    // ignore error, null still gets parsed as NaN
+    const storageIndex = parseInt(window.localStorage.getItem("voiceIndex"))
+    if (Number.isInteger(storageIndex) && storageIndex >= 0) {
+      // console.log("index found: ", storageIndex)
+      defaultVoice = window.speechSynthesis.getVoices()[storageIndex]
+    }
+    // check this we found a voice at the specified index
+    if (!defaultVoice) {
+      // console.log("Attempting to find preferred defaults from:", window.speechSynthesis.getVoices())
+      defaultVoice = window.speechSynthesis.getVoices().find(v => v.name == preferredVoices[0] || preferredVoices[1])
+    }
+  }
+  if (defaultVoice) {
+    // console.log("found a default, setting voice")
     msg.voice = defaultVoice
+  }
   return msg
 }
 
