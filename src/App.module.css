@@ -50,3 +50,25 @@
     background: transparent;
   }
 }
+
+.github {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(
+    to top right,
+    transparent 0%,
+    transparent 50%,
+    #cbcdcf 50%,
+    #cbcdcf 100%
+  );
+  width: 4rem;
+  height: 4rem;
+}
+
+.github img {
+  width: 43%;
+  position: absolute;
+  top: 8%;
+  right: 8%;
+}

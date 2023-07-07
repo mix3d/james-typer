@@ -3,6 +3,7 @@ import { createSignal, createEffect, onMount, onCleanup, For, Show } from 'solid
 import fitty from 'fitty';
 
 import styles from './App.module.css';
+import github from './assets/github-mark.svg'
 
 const CLEAR = ['Enter', 'Space']
 
@@ -144,6 +145,9 @@ const App: Component = () => {
 
   return (
     <div class={styles.App}>
+      <a class={styles.github} href="https://github.com/mix3d/james-typer">
+        <img src={github} alt="Github logo"></img>
+      </a>
       <div ref={ref}>
         <Show when={inputString().length}>
           <span class={styles.prompt}></span>
