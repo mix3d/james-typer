@@ -30,11 +30,11 @@ const createVoice = (string: string) => {
     // check this we found a voice at the specified index
     if (!defaultVoice) {
       // console.log("Attempting to find preferred defaults from:", window.speechSynthesis.getVoices())
-      defaultVoice = window.speechSynthesis.getVoices().find(v => v.name == preferredVoices[0] || preferredVoices[1])
+      defaultVoice = window.speechSynthesis.getVoices().find(v => v.name == preferredVoices[0] || v.name == preferredVoices[1])
     }
   }
   if (defaultVoice) {
-    // console.log("found a default, setting voice")
+    console.log("found a default, setting voice", defaultVoice.name)
     msg.voice = defaultVoice
   }
   return msg
