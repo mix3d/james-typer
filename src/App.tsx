@@ -102,6 +102,7 @@ const App: Component = () => {
       speakingArray.pop()
     }
     else if (e.code === 'Space') {
+      // Insert non-breaking spaces, but only one
       if (inputString().slice(-1) !== '\xa0') {
         setInputString(prev => prev + '\xa0')
         speakingIndex++

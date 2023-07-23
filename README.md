@@ -26,6 +26,7 @@ I am fully aware that I am mixing Solid's signals and vanilla JS arrays, this wa
 - A generative AI / other image search to find an appropriate image, if the object is a standard item (like an apple, house, etc) or an animal (Dog, Cat, horse, penguin, etc), which is then shown during the submission
 - A submission history that's easily visible
 - Raspberry Pi script to boot directly and fullscreen into the built site
+- [Wakelock API](https://www.educative.io/answers/how-to-keep-your-screen-awake-using-javascript)
 
 In all likelihood, this will never happen, but one can dream!
 

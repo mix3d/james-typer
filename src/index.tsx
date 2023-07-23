@@ -13,3 +13,25 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 }
 
 render(() => <App />, root!);
+
+let timeoutId: number;
+
+function resetTimer() {
+  // Clear the previous timeout, if any
+  if (timeoutId) {
+    document.body.classList.remove("nocursor");
+    clearTimeout(timeoutId);
+  }
+
+  // Set a new timeout for 2 seconds
+  timeoutId = setTimeout(runFunctionAfterInactivity, 2000);
+}
+
+function runFunctionAfterInactivity() {
+  document.body.classList.add("nocursor");
+}
+
+// Add event listeners to track mouse movement
+document.addEventListener("mousemove", resetTimer);
+
+resetTimer()
